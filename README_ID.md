@@ -4,7 +4,7 @@ Memanfaatkan Cloudflare Workers untuk mengulang permintaan HTTP Anda dengan meng
 <br />
 <br />
 
-## Bagaimana CF-Proxy-Rotator Bekerja
+## How it works
 CF-Proxy-Rotator mengimplementasikan fungsi yang mengirim permintaan HTTP melalui Cloudflare Workers. Setiap kali permintaan dibuat, alamat IP yang digunakan akan dipilih secara acak dari pool alamat IP yang disediakan oleh Cloudflare. Hal ini memungkinkan Anda untuk mengganti alamat IP yang terlihat oleh server tujuan dengan setiap permintaan yang Anda kirimkan.
 
 Dengan menggunakan Cloudflare Workers, CF-Proxy-Rotator memastikan bahwa permintaan Anda diarahkan melalui jaringan global Cloudflare, memberikan manfaat seperti kecepatan tinggi, keamanan, dan kemampuan penyebaran geografis yang luas. Selain itu, penggunaan alamat IP acak membantu menyamarkan identitas Anda, menjaga privasi, dan melindungi dari pelacakan yang tidak diinginkan.
@@ -12,8 +12,8 @@ Dengan menggunakan Cloudflare Workers, CF-Proxy-Rotator memastikan bahwa permint
 <br />
 
 ## How to use
-kirim request ke alamat workers anda, tambahkan "originalUrl" dengan value alamat tujuan asli kedalam request header
-contoh menggunakan curl
+Kirim permintaan ke alamat workers yang Anda tetapkan, dan tambahkan header "originalUrl" dengan nilai berupa alamat tujuan asli.
+Berikut adalah contoh penggunaan dengan menggunakan cURL
 ```bash
 curl "https://cf-proxy.sakura-nee.workers.dev/" -H "originalUrl=https://ipinfo.io/json"
 ```
@@ -27,7 +27,7 @@ const axios = require('axios');
 
 axios.interceptors.request.use((config) => {
     config.headers['originalUrl'] = config.url;
-    config.url = 'https://prefix.username.workers.dev'; // workers url
+    config.url = 'https://prefix.username.workers.dev/'; // workers url
     return config;
 }, (error) => {
     return Promise.reject(error);
